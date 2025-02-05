@@ -1,2 +1,4 @@
 # Proyecto-Integrador-1
-Este repositorio contiene todo el trabajo realizado para la materia de Proyecto Integrador 1 en el semestre 2025-1 con el profesor Wilmer Gil Moreno. Los integrantes del grupo son: Diego Mesa, Andrés Alarcón y Miguel Villegas
+This repository contains all the work done for the Proyecto Integrador 1 course in the 2025-1 semester with Professor Wilmer Gil Moreno.
+
+The group members are: Diego Mesa, Andrés Alarcón, and Miguel Villegas.
