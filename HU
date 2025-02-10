@@ -1,0 +1,56 @@
+from datetime import datetime, timedelta
+
+
+class Usuario:
+    def __init__(self, nombre, correo):
+        self.nombre = nombre
+        self.correo = correo
+        self.reservas = []  # Lista para almacenar las reservas del usuario
+
+    def agregar_reserva(self, fecha, espacio):
+        """Agrega una nueva reserva al perfil del usuario."""
+        reserva = {
+            "fecha": fecha,
+            "espacio": espacio,
+            "estado": "pendiente"  # Estado puede ser 'pendiente' o 'cancelada'
+        }
+        self.reservas.append(reserva)
+        print(f"Reserva creada para el {fecha} en {espacio}.")
+
+    def ver_perfil(self):
+        """Muestra el perfil del usuario, incluyendo reservas pasadas y pendientes."""
+        print(f"\nPerfil de {self.nombre}")
+        print(f"Correo: {self.correo}\n")
+        hoy = datetime.now()
+
+        print("Reservas pendientes:")
+        for reserva in self.reservas:
+            if reserva["estado"] == "pendiente" and reserva["fecha"] > hoy:
+                print(f" - {reserva['fecha'].strftime('%Y-%m-%d')} en {reserva['espacio']}")
+
+        print("\nHistorial de reservas (últimos 3 meses):")
+        tres_meses_atras = hoy - timedelta(days=90)
+        for reserva in self.reservas:
+            if reserva["fecha"] <= hoy and reserva["fecha"] >= tres_meses_atras:
+                estado = "cancelada" if reserva["estado"] == "cancelada" else "realizada"
+                print(f" - {reserva['fecha'].strftime('%Y-%m-%d')} en {reserva['espacio']} ({estado})")
+
+    def cancelar_reserva(self, fecha, espacio):
+        """Permite cancelar una reserva pendiente."""
+        for reserva in self.reservas:
+            if reserva["fecha"] == fecha and reserva["espacio"] == espacio and reserva["estado"] == "pendiente":
+                reserva["estado"] = "cancelada"
+                print(f"Reserva para el {fecha.strftime('%Y-%m-%d')} en {espacio} ha sido cancelada.")
+                return
+        print("No se encontró una reserva pendiente con esa información.")
+
+    def mover_reserva(self, fecha_actual, espacio_actual, nueva_fecha):
+        """Permite mover una reserva a una nueva fecha."""
+        for reserva in self.reservas:
+            if reserva["fecha"] == fecha_actual and reserva["espacio"] == espacio_actual and reserva["estado"] == "pendiente":
+                reserva["fecha"] = nueva_fecha
+                print(f"Reserva movida al {nueva_fecha.strftime('%Y-%m-%d')} en {espacio_actual}.")
+                return
+        print("No se encontró una reserva pendiente con esa información.")
+
+        
