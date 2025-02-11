@@ -1,0 +1,7 @@
+# Ignorar archivos sensibles
+client_secret_verdadero.json
+.env
+
+# Ignorar la carpeta de entornos virtuales (si la usas)
+venv/
+__pycache__/
