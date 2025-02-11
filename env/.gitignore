@@ -1,6 +1,7 @@
 # Ignorar archivos sensibles
 client_secret_verdadero.json
 .env
+client_secret_958374592195-7kfmakumaho20nkr4me7td0d5epgkfuu.apps.googleusercontent.com.json
 
 # Ignorar la carpeta de entornos virtuales (si la usas)
 venv/
