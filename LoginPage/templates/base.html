@@ -10,10 +10,26 @@
 </head>
 <body>
     <header>
-        <h1>Bienvenido a SIGERE</h1>
+        <h1>Welcome to SIGERE</h1>
         <nav>
             <a href="{% url 'registro' %}">Registro</a> |
-            <a href="{% url 'login' %}">Iniciar Sesión</a>
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: blue; cursor: pointer;">
+                        Cerrar sesión
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar Sesión</a> |
+
+                <!-- Botón de inicio de sesión con Google -->
+                 {% load socialaccount%}
+                 <h2>Google Login<h2>
+                <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
+
+            {% endif %}
         </nav>
     </header>
     <main>

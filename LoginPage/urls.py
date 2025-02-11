@@ -25,5 +25,8 @@ urlpatterns = [
     path('usuarios/login/', LoginView.as_view(template_name='usuarios/login.html'), name='login'),
     path('usuarios/registro/', views.registro, name='registro'),
     path("", home, name="home"),  # Asegúrate de que hay una ruta con name="home"
+    path("usuarios/", include("usuarios.urls")),  # Asegúrate de incluir usuarios.urls
+    path('accounts/', include('allauth.urls')),  # Agregar django-allauth
+    path("", include("usuarios.urls")),
 ]
 
