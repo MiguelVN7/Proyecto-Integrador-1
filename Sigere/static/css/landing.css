@@ -1,0 +1,358 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Aleo', serif;
+    overflow-x: hidden;
+}
+
+/* Header con los logos */
+.header {
+    background-color: #002F86; /* Azul EAFIT exacto */
+    height: 125px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo-eafit {
+    width: 188px;
+    height: 81px;
+    object-fit: contain;
+}
+
+.logo-sigere {
+    width: 178px;
+    height: 81px;
+    object-fit: contain;
+}
+
+
+/* Sección blanca del medio */
+.white-section {
+    height: 715px;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+.space-landing {
+    height: 134px;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+/* Sección principal con fondo azul (para landing) */
+.main-content {
+    flex-grow: 1;
+    background: #1476A3; /* Azul medio exacto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 620px;
+    width: 100%;
+}
+
+/* Contenedor de bienvenida (landing) */
+.welcome-container {
+    background-color: #B3B3B3; /* Gris exacto */
+    border-radius: 10px;
+    padding: 20px 40px;
+    text-align: center;
+    width: 840px;
+    height: 180px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-title {
+    color: #FFFFFF;
+    font-family: 'Aleo', serif;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.welcome-text {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedores de opciones (landing) */
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-bottom: 20px;
+    width: 840px;
+}
+
+.option-box {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    width: 385px;
+    height: 164px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.option-title {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.option-button {
+    width: 156px;
+    height: 47px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-weight: 700;
+    text-decoration: none;
+    font-family: 'Aleo', serif;
+    font-size: 20px;
+}
+
+.option-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Enlaces adicionales (landing) */
+.additional-links {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-top: 30px;
+    width: 840px;
+}
+
+.link-container {
+    width: 385px;
+    display: flex;
+    justify-content: center;
+}
+
+.link {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor de signup (registro) */
+.signup-container {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center;
+    width: 722px;
+    height: 622px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.login-container {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center;
+    width: 387px;
+    height: 465px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.create-title {
+    color: #0057FF;
+    font-family: 'Aleo', serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.atributes-title {
+    color: #000000;
+    font-family: 'Aleo', serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 100%;
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Botón de signup */
+.signup-button {
+    width: 156px;
+    height: 47px;
+    background-color: #0057FF !important;
+    border-color: #0057FF !important;
+    border-radius: 10px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    font-family: 'Aleo', serif !important;
+    font-size: 20px !important;
+}
+
+.signup-button:hover {
+    background-color: #0046cc !important;
+    border-color: #0046cc !important;
+}
+
+/* Estilos para los campos del formulario */
+.form-control {
+    border-radius: 5px;
+    height: 40px;
+    border: 1px solid #ced4da;
+}
+
+.login-control {
+    border-radius: 5px;
+    height: 40px;
+    border: 1px solid #ced4da;
+}
+
+/* Social icons */
+.social-icon {
+    width: 67px;
+    height: 67px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+/* Sección abajo con fondo azul (footer) */
+.footer {
+    background: #1476A3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 276px;
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .white-section {
+        height: auto;
+        padding: 40px 0;
+    }
+    
+    .welcome-container, .signup-container {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+    }
+    
+    .welcome-title {
+        font-size: 36px;
+    }
+    
+    .welcome-text {
+        font-size: 20px;
+        width: 100%;
+    }
+    
+    .options-container {
+        flex-direction: column;
+        width: 90%;
+        gap: 20px;
+    }
+    
+    .option-box {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+    
+    .option-title {
+        width: 100%;
+        font-size: 20px;
+    }
+    
+    .additional-links {
+        flex-direction: column;
+        width: 90%;
+        gap: 20px;
+    }
+    
+    .link-container {
+        width: 100%;
+    }
+    
+    .link {
+        font-size: 20px;
+    }
+    
+    .footer {
+        height: auto;
+        min-height: 150px;
+    }
+}
+
+@media (max-height: 800px) {
+    .signup-container {
+        height: 550px;
+    }
+}
