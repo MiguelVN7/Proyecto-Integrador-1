@@ -1,0 +1,74 @@
+{% extends 'reservas/base.html' %}
+{% load custom_filters %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Perfil del Usuario</h1>
+
+    <div class="row mt-4">
+        <!-- Datos universitarios -->
+        <div class="col-md-4">
+            <div class="card bg-light p-3 shadow-lg">
+                <h4 class="text-primary text-center">Datos universitarios</h4>
+                <p><strong>Universidad:</strong> {{ usuario.universidad }}</p>
+                <p><strong>Carrera:</strong> {{ usuario.carrera }}</p>
+            </div>
+        </div>
+
+        <!-- Datos personales -->
+        <div class="col-md-4">
+            <div class="card bg-light p-3 shadow-lg">
+                <h4 class="text-primary text-center">Datos personales</h4>
+                <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+                <p><strong>Email:</strong> {{ usuario.email }}</p>
+                <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+            </div>
+        </div>
+
+        <!-- Datos de reservas -->
+        <div class="col-md-4">
+            <div class="card bg-light p-3 shadow-lg">
+                <h4 class="text-primary text-center">Datos de reservas</h4>
+                {% for reserva in reservas %}
+                    <p><strong>{{ reserva.fecha }}:</strong> {{ reserva.descripcion }}</p>
+                {% empty %}
+                    <p>No tienes reservas.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center">Horario de Reservas</h2>
+    <table class="table table-bordered text-center">
+        <thead class="table-dark text-white">
+            <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hora in horas_disponibles %}
+                <tr>
+                    <td>{{ hora }}</td>
+                    {% for dia in dias_semana %}
+                        {% with dia_hora=dia|add:":"|add:hora %}
+                            <td class="{% if reservas|filter_reserva:dia_hora %} table-primary {% endif %}"></td>
+                        {% endwith %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
