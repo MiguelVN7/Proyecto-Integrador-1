@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigere - Reservar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{% static 'css/landing.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Header con logos -->
+    <header class="header">
+        <a href="{% url 'LandingPage:landing' %}">
+            <img src="{% static 'assets/img/logo_eafit.png' %}" alt="Universidad EAFIT" class="logo-eafit">
+        </a>
+        <div class="home-container">
+            <a href="{% url 'LandingPage:home' %}">
+                <img src="{% static 'assets/img/home_icon.png' %}" alt="Home" class="logo-home">
+            </a>
+        </div>
+        <a href="{% url 'LandingPage:landing' %}">
+            <img src="{% static 'assets/img/Sigere_logo.png' %}" alt="Sigere" class="logo-sigere">
+        </a>
+    </header>
+    
+    <!-- Sección principal de contenido -->
+    <main class="white-section d-flex justify-content-between align-items-center" style="padding: 0 40px; gap: 40px;">
+        <div class="rectangulo-gris">
+            <h1 class="create-title mb-4">Espacios deportivos</h1>
+
+            <form method="POST" action="">
+              {% csrf_token %}
+              
+              <!-- Primera fila: Deporte y Suplementos -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="deporte" class="atributes-title">Deporte</label>
+                  <select id="deporte" name="deporte" class="form-select">
+                    <option value="" disabled selected>Seleccione un deporte…</option>
+                    {% for d in deportes %}
+                      <option value="{{ d }}">{{ d }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="desea_suplementos" class="atributes-title">¿Desea suplementos?</label>
+                  <input type="checkbox" id="desea_suplementos" name="desea_suplementos" class="form-check-input mt-2">
+                </div>
+              </div>
+
+              <!-- Segunda fila: Día y Hora -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="fecha" class="atributes-title">Día</label>
+                  <input type="date" id="fecha" name="fecha" class="date-input form-control">
+                </div>
+                <div class="col-md-6 mb-3 time-container">
+                  <label for="hora" class="atributes-title">Hora</label>
+                  <input type="time" id="hora" name="hora" class="time-input form-control">
+                </div>
+              </div>
+
+              <!-- Tercera fila: Espacio específico centrado -->
+              <div class="row mb-4">
+                <div class="col-md-12 d-flex flex-column align-items-center">
+                  <label for="espacio" class="atributes-title text-center w-80 mb-2">Espacio específico</label>
+                  <select id="espacio" name="espacio" class="form-select">
+                      <option value="" disabled selected>Elija primero un deporte</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Botón Reservar centrado -->
+              <div class="d-flex justify-content-center mt-3">
+                  <button type="submit" class="btn btn-primary signup-button">Reservar</button>
+              </div>
+            </form>
+
+        </div>
+
+        <div class="map-wrapper mx-3">
+            <img src="{% static 'assets/img/mapa_eafit.png' %}" alt="Mapa de la Universidad" class="mapa-eafit">
+        </div>
+    </main>
+    
+    <!-- Footer azul -->
+    <footer class="footer">
+        <div class="rectangulo-blanco">
+            <a href="{% url 'LandingPage:deportivos' %}">
+                <img src="{% static 'assets/img/raqueta.png' %}" alt="Espacios deportivos" class="raqueta-deportivos">
+                <span class="footer-label">Deportivos</span>
+            </a>
+        </div>
+        <div class="rectangulo-blanco">
+            <a href="{% url 'LandingPage:misReservas' %}">
+                <img src="{% static 'assets/img/reservas.png' %}" alt="Mis reservas" class="dibujo-reservas">
+                <span class="footer-label">Mis Reservas</span>
+            </a>
+        </div>
+        <div class="rectangulo-blanco">
+            <a href="{% url 'LandingPage:calendario' %}">
+                <img src="{% static 'assets/img/calendario.png' %}" alt="Calendario" class="dibujo-calendario">
+                <span class="footer-label">Calendario</span>
+            </a>
+        </div>
+        <div class="rectangulo-blanco">
+            <a href="{% url 'LandingPage:perfil' %}">
+                <img src="{% static 'assets/img/perfil.png' %}" alt="Perfil" class="dibujo-perfil">
+                <span class="footer-label">Perfil</span>
+            </a>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script id="espacios-data" type="application/json">
+      {{ espacios_json|safe }}
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const deportesSelect = document.getElementById('deporte');
+        const espacioSelect = document.getElementById('espacio');
+        const espacios = JSON.parse(document.getElementById('espacios-data').textContent);
+        deportesSelect.addEventListener('change', function() {
+          const elegido = this.value;
+          const filtrados = espacios.filter(e => e.deporte === elegido);
+          espacioSelect.innerHTML = '<option disabled selected>Seleccione un espacio</option>';
+          filtrados.forEach(e => {
+            const opt = document.createElement('option');
+            opt.value = e.id;
+            opt.textContent = e.nombre;
+            espacioSelect.appendChild(opt);
+          });
+        });
+      });
+    </script>
+</body>
+</html>
