@@ -1,0 +1,624 @@
+
+/* Estilo específico para la vista de "reservado": cuadro gris más alto y contenidos separados */
+.rectangulo-gris.reservado {
+    height: 350px;              /* Ajusta la altura vertical */
+    justify-content: space-between; /* Sitúa el título arriba y los botones abajo */
+    padding: 20px 30px;         /* Espacio interior ajustado */
+}
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Aleo', serif;
+    overflow-x: hidden;
+}
+
+/* Header con los logos */
+.header {
+    background-color: #002F86; /* Azul EAFIT exacto */
+    height: 125px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo-eafit {
+    width: 188px;
+    height: 81px;
+    object-fit: contain;
+}
+
+.logo-sigere {
+    width: 178px;
+    height: 81px;
+    object-fit: contain;
+}
+
+.logo-home {
+    width: 178px;
+    height: 81px;
+    object-fit: contain;
+}
+
+
+/* Sección blanca del medio */
+.white-section {
+    /* Remove fixed height and use flex centering */
+    min-height: calc(100vh - 125px - 216px);
+    background-color: #FFFFFF;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.rectangulo-blanco {
+    width: 130px;             /* Aumenta el ancho */
+    height: 130px;            /* Aumenta la altura */
+    border-radius: 15px;
+    background: #FFF;
+    display: flex;
+    flex-direction: column;   /* Apila el ícono y el texto verticalmente */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rectangulo-blanco:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Ajuste de tamaño para los íconos dentro de los botones */
+.rectangulo-blanco img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.raqueta-deportivos{
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.dibujo-reservas{
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.dibujo-calendario{
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.dibujo-perfil{
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.rectangulo-gris {
+    width: 650px;         /* Disminuye el ancho */
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #B3B3B3;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* center vertically inside grey box */
+    align-items: center;
+
+    /* Espacio interno y separación reducida */
+    padding: 30px;
+    margin: 0 auto;
+    row-gap: 20px; /* Menor espacio vertical entre elementos */
+    
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* .rectangulo-gris:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+} */
+
+
+/* Ajuste de tamaño para los íconos dentro de los botones */
+.rectangulo-gris img {
+    max-width: 537px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.space-landing {
+    height: 134px;
+    background-color: #FFFFFF;
+    width: 100%;
+}
+
+/* Sección principal con fondo azul (para landing) */
+.main-content {
+    flex-grow: 1;
+    background: #1476A3; /* Azul medio exacto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 620px;
+    width: 100%;
+}
+
+/* Contenedor de bienvenida (landing) */
+.welcome-container {
+    background-color: #B3B3B3; /* Gris exacto */
+    border-radius: 10px;
+    padding: 20px 40px;
+    text-align: center;
+    width: 840px;
+    height: 180px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-title {
+    color: #FFFFFF;
+    font-family: 'Aleo', serif;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.welcome-text {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Pagina de Mis Reservas */
+.home-container {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    width: 100px;    /* Aumentado de 70px a 100px */
+    height: 100px;   /* Aumentado de 70px a 100px */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Añadido para comportamiento de botón */
+}
+
+/* Añadido efecto hover para .home-container */
+.home-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedores de opciones (landing) */
+.options-container {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-bottom: 20px;
+    width: 840px;
+}
+
+.option-box {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    width: 385px;
+    height: 164px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.option-title {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.option-button {
+    width: 156px;
+    height: 47px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-weight: 700;
+    text-decoration: none;
+    font-family: 'Aleo', serif;
+    font-size: 20px;
+}
+
+.option-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Enlaces adicionales (landing) */
+.additional-links {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-top: 30px;
+    width: 840px;
+}
+
+.link-container {
+    width: 385px;
+    display: flex;
+    justify-content: center;
+}
+
+.link {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Aleo', serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* Contenedor de signup (registro) */
+.signup-container {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center;
+    width: 722px;
+    height: 622px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.login-container {
+    background-color: #B3B3B3;
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center;
+    width: 387px;
+    height: 465px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.create-title {
+    color: #0057FF;
+    font-family: 'Aleo', serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 0 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.atributes-title {
+    color: #000000;
+    font-family: 'Aleo', serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 100%;
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Botón de signup */
+.signup-button {
+    width: 156px;
+    height: 47px;
+    background-color: #0057FF !important;
+    border-color: #0057FF !important;
+    border-radius: 10px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    font-family: 'Aleo', serif !important;
+    font-size: 20px !important;
+}
+
+.signup-button:hover {
+    background-color: #0046cc !important;
+    border-color: #0046cc !important;
+}
+
+/* Estilos para los campos del formulario */
+.form-control {
+    border-radius: 5px;
+    height: 40px;
+    border: 1px solid #ced4da;
+}
+
+.login-control {
+    border-radius: 5px;
+    height: 40px;
+    border: 1px solid #ced4da;
+}
+
+/* Social icons */
+.social-icon {
+    width: 67px;
+    height: 67px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+/* Sección abajo con fondo azul (footer) */
+.footer {
+    background: #1476A3;
+    display: flex;
+    flex-direction: row;      /* Alinea los botones horizontalmente */
+    justify-content: center;  /* Centra horizontalmente */
+    align-items: center;      /* Centra verticalmente */
+    padding: 20px;
+    gap: 20px;                /* Espacio entre botones */
+    width: 100%;
+    height: 216px;
+}
+
+.footer-label {
+    font-family: 'Aleo', serif;
+    font-size: 16px;  /* Más grande */
+    color: #000;      /* Color negro */
+    font-weight: bold; /* Palabra más gruesa */
+    margin-top: 4px;  /* Espacio entre el ícono y el texto */
+}
+
+/* Asegura que el enlace dentro de cada rectángulo esté centrado */
+.rectangulo-blanco a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.main-content-reservas {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}   
+
+.reservas-section {
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.section-title {
+    background-color: #D9D9D9;
+    padding: 10px 15px;
+    margin-bottom: 0;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+.section-content {
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+    min-height: 100px;
+}
+
+.navbar-bottom {
+    background-color: #1476A3;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    margin: 0 15px;
+}
+
+.nav-icon {
+    background-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.nav-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.nav-label {
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}
+
+.active {
+    font-weight: bold;
+}
+
+.home-container {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    width: 80px;
+    height: 80px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.button-wrapper {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Estilizado de selects dentro del rectángulo gris */
+.rectangulo-gris select.form-select {
+    width: 230px !important;
+    max-width: 360px;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    height: 48px !important;
+    padding: 0 16px !important;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.rectangulo-gris select.form-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.4);
+}
+
+/* Estilo para el input tipo date que abre calendario */
+.date-input {
+    width: 230px !important;
+    max-width: 360px;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    height: 48px !important;
+    padding: 0 16px !important;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.date-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.4);
+}
+
+/* Estilo para el input tipo time que abre selector de hora */
+.time-input {
+    width: 230px !important;
+    max-width: 360px;
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    height: 48px !important;
+    padding: 0 16px !important;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.time-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.4);
+}
+/* Corregido: botones en fila con separación y tamaño ajustado */
+.rectangulo-gris.reservado .row.mb-3 {
+    display: flex !important;
+    justify-content: center;
+    gap: 30px;
+}
+
+.rectangulo-gris.reservado .row.mb-3 .col-md-6 {
+    flex: none !important;
+    width: auto !important;
+}
+
+/* Botones ligeramente más grandes */
+.rectangulo-gris.reservado .signup-button {
+    padding: 14px 26px !important; /* 14px vertical, 26px horizontal */
+    font-size: 18px !important;
+}
+
+/* Estilos para la caja de perfil */
+.perfil-box {
+    width: 500px;            /* Ancho fijo para cada recuadro */
+    padding: 30px;           /* Espacio interno */
+    box-sizing: border-box;  /* Incluye padding en el ancho */
+}
+
+/* Inputs dentro de perfil ocupan todo el ancho */
+.perfil-box .form-control {
+    width: 100%;
+}
