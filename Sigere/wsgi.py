@@ -17,7 +17,7 @@ def run_populate_script():
         from Sigere.Apps.LandingPage.models import EspacioDeportivo
         if not EspacioDeportivo.objects.exists():
             import os
-            os.system("python Sigere/scripts/populate.py")
+            os.system("python Sigere/populate.py")
     except OperationalError:
         pass  # Base de datos aún no está lista
 
