@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Para permitir servir estáticos en producción
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # si tienes una carpeta `static` en tu proyecto
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
 
 
 # Default primary key field type
@@ -142,6 +142,6 @@ AUTH_USER_MODEL = 'LandingPage.Usuario'
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1']
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
