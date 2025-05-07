@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
 import os
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,14 +84,23 @@ WSGI_APPLICATION = 'Sigere.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-    
-    #{
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': BASE_DIR / 'Sigere.db',
-    #   }
-}
+import os
+import dj_database_url
+
+# Detecta si estamos en producción (Render)
+RENDER = os.environ.get('RENDER', '') == 'true'
+
+if RENDER:
+    DATABASES = {
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'Sigere.db',
+        }
+    }
 
 
 # Password validation
@@ -139,6 +152,6 @@ AUTH_USER_MODEL = 'LandingPage.Usuario'
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1']
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
