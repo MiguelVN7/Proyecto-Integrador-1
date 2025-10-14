@@ -1,0 +1,26 @@
+{% extends 'LandingPage/base_reviews.html' %}
+
+{% block title %}Eliminar reseña{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <section class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+                Confirmar eliminación
+            </div>
+            <div class="card-body">
+                <p>¿Estás seguro de que deseas eliminar la reseña para <strong>{{ object.espacio.nombre }}</strong>?</p>
+                {% if object.comentario %}
+                    <blockquote class="blockquote small text-muted">{{ object.comentario }}</blockquote>
+                {% endif %}
+                <form method="post" class="d-flex justify-content-end gap-2">
+                    {% csrf_token %}
+                    <a href="{% url 'LandingPage:resenas_dashboard' %}" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -156,3 +156,17 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1']
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
+# Auth redirects
+LOGIN_URL = 'LandingPage:login'
+LOGIN_REDIRECT_URL = 'LandingPage:home'
+
+# Inyección de dependencias para servicios de IA
+AI_CONTENT_PROVIDER = {
+    "CLASS": "Sigere.Apps.LandingPage.services.ai_provider.OpenAIContentProvider",
+    "OPTIONS": {
+        "description_model": "gpt-3.5-turbo",
+        "image_model": "dall-e-3",
+        "temperature": 0.7,
+    },
+}
+

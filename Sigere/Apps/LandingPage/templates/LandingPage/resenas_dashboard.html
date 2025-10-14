@@ -1,0 +1,110 @@
+{% extends 'LandingPage/base_reviews.html' %}
+{% load rating_tags %}
+
+{% block title %}Sigere - Reseñas{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-5">
+        <section class="card h-100 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Reservas pendientes de reseña
+            </div>
+            <div class="card-body">
+                {% if pending_reservations %}
+                    <ul class="list-group list-group-flush">
+                        {% for reserva in pending_reservations %}
+                            <li class="list-group-item d-flex flex-column gap-2">
+                                <div>
+                                    <strong>{{ reserva.espacio.nombre }}</strong>
+                                    <div class="small text-muted">{{ reserva.fecha|date:"d/m/Y" }} · {{ reserva.hora|time:"H:i" }}</div>
+                                </div>
+                                <div>
+                                    <a class="btn btn-sm btn-success" href="{% url 'LandingPage:resena_crear' reserva.id %}">Calificar</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="mb-0">No tienes reservas pendientes de calificación. ¡Sigue entrenando!</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <div class="col-lg-7">
+        <section class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Mis reseñas
+            </div>
+            <div class="card-body">
+                {% if mis_resenas %}
+                    <div class="list-group">
+                        {% for resena in mis_resenas %}
+                            {% star_range resena.calificacion as stars %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">{{ resena.espacio.nombre }}</h6>
+                                        <div class="text-warning">
+                                            {% for _ in stars.full %}<span class="me-1">★</span>{% endfor %}
+                                            {% for _ in stars.half %}<span class="me-1 text-warning" style="opacity:0.7;">☆</span>{% endfor %}
+                                            {% for _ in stars.empty %}<span class="me-1 text-secondary">☆</span>{% endfor %}
+                                            <span class="text-muted small ms-2">{{ resena.calificacion }}/5</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <small class="text-muted">{{ resena.created_at|date:"d/m/Y" }}</small>
+                                        <form action="{% url 'LandingPage:resena_eliminar' resena.id %}" method="post" class="mt-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% if resena.comentario %}
+                                    <p class="mb-0 mt-2">{{ resena.comentario }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="mb-0">Aún no has publicado reseñas. Califica tus reservas pasadas para ayudar a otros deportistas.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-12">
+        <section class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Espacios mejor valorados
+            </div>
+            <div class="card-body">
+                {% if top_spaces %}
+                    <div class="row row-cols-1 row-cols-md-3 g-3">
+                        {% for espacio in top_spaces %}
+                            {% star_range espacio.calificacion_promedio as stars %}
+                            <div class="col">
+                                <div class="border rounded p-3 h-100">
+                                    <h6 class="fw-bold">{{ espacio.nombre }}</h6>
+                                    <p class="mb-1 text-muted">{{ espacio.deporte }}</p>
+                                    <div class="text-warning">
+                                        {% for _ in stars.full %}<span class="me-1">★</span>{% endfor %}
+                                        {% for _ in stars.half %}<span class="me-1 text-warning" style="opacity:0.7;">☆</span>{% endfor %}
+                                        {% for _ in stars.empty %}<span class="me-1 text-secondary">☆</span>{% endfor %}
+                                        <span class="text-muted small ms-2">{{ espacio.calificacion_promedio|floatformat:1 }}/5 ({{ espacio.total_resenas }} reseñas)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="mb-0">Aún no hay suficientes reseñas para mostrar rankings.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

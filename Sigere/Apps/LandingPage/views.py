@@ -1,20 +1,27 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib import messages
-from django.conf import settings
-from openai import OpenAI
-from .models import Reserva, Usuario, EspacioDeportivo
+from .models import Reserva, Usuario, EspacioDeportivo, PerfilUniversitario, Resena
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, TemplateView, FormView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.utils import timezone
 import json
 from .forms import DatosPersonalesForm, DatosUniversitariosForm
 from django.contrib.auth.decorators import login_required
-from .forms import ReservaForm
-from django.contrib import messages
+from .forms import ReservaForm, ResenaForm
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+from Sigere.Apps.LandingPage.services import (
+    get_ai_provider,
+    AIProviderError,
+    get_pending_reservations_for_review,
+    get_review_stats_for_space,
+    get_top_rated_spaces,
+)
 
 
 def landing_page(request):
@@ -64,6 +71,11 @@ def signup_view(request):
         last_name = request.POST.get('last_name')
         genero = request.POST.get('genero')
         segundo_apellido = request.POST.get('segundo_apellido')
+        numero_estudiante = request.POST.get('numero_estudiante')
+        carrera = request.POST.get('carrera')
+        semestre = request.POST.get('semestre')
+        facultad = request.POST.get('facultad')
+        codigo = request.POST.get('codigo')
 
         # Verificar si el correo ya existe
         if Usuario.objects.filter(email=email).exists():
@@ -86,6 +98,15 @@ def signup_view(request):
             )
             user.save()
 
+            # Crear/Ajustar perfil universitario normalizado
+            perfil_universitario, _ = PerfilUniversitario.objects.get_or_create(usuario=user)
+            perfil_universitario.numero_estudiante = numero_estudiante
+            perfil_universitario.carrera = carrera
+            perfil_universitario.semestre = semestre
+            perfil_universitario.facultad = facultad
+            perfil_universitario.codigo = codigo
+            perfil_universitario.save()
+
             # Iniciar sesión automáticamente después del registro
             login(request, user)
 
@@ -103,12 +124,14 @@ def reservar(request):
     """Vista para la página de reservas."""
     return render(request, 'LandingPage/reservar.html')
 
-@login_required
-def misReservas(request):
-    reservas_usuario = Reserva.objects.filter(usuario=request.user).order_by('-fecha', '-hora')
-    return render(request, 'LandingPage/misReservas.html', {
-        'reservas': reservas_usuario
-    })
+class MisReservasView(LoginRequiredMixin, ListView):
+    template_name = 'LandingPage/misReservas.html'
+    context_object_name = 'reservas'
+
+    def get_queryset(self):
+        return (Reserva.objects
+                .for_user(self.request.user)
+                .ordered_recent_first())
 
 
 """
@@ -129,38 +152,110 @@ def calendario_view(request):
     return render(request, 'LandingPage/calendario.html')
 
 
-@login_required
-def perfil_view(request):
-    usuario = request.user
+class PerfilView(LoginRequiredMixin, TemplateView):
+    template_name = 'LandingPage/perfil.html'
 
-    if request.method == 'POST':
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.request.user
+        perfil, _ = PerfilUniversitario.objects.get_or_create(usuario=usuario)
+        context.setdefault('form_personal', DatosPersonalesForm(instance=usuario))
+        context.setdefault('form_uni', DatosUniversitariosForm(instance=perfil))
+        context.update({
+            'total_reservas': usuario.total_reservas(),
+            'reservas_activas': usuario.reservas_activas(),
+            'reservas_pasadas': usuario.reservas_pasadas(),
+            'reservas_canceladas': usuario.reservas_canceladas(),
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        usuario = request.user
+        perfil, _ = PerfilUniversitario.objects.get_or_create(usuario=usuario)
+        form_personal = DatosPersonalesForm(instance=usuario)
+        form_uni = DatosUniversitariosForm(instance=perfil)
+
         if 'guardar_personales' in request.POST:
             form_personal = DatosPersonalesForm(request.POST, instance=usuario)
-            form_uni = DatosUniversitariosForm(instance=usuario)  # solo carga, no guarda
             if form_personal.is_valid():
                 form_personal.save()
                 messages.success(request, "Datos personales actualizados.")
                 return redirect('LandingPage:perfil')
 
         elif 'guardar_universitarios' in request.POST:
-            form_uni = DatosUniversitariosForm(request.POST, instance=usuario)
-            form_personal = DatosPersonalesForm(instance=usuario)  # solo carga, no guarda
+            form_uni = DatosUniversitariosForm(request.POST, instance=perfil)
             if form_uni.is_valid():
                 form_uni.save()
                 messages.success(request, "Datos universitarios actualizados.")
                 return redirect('LandingPage:perfil')
-    else:
-        form_personal = DatosPersonalesForm(instance=usuario)
-        form_uni = DatosUniversitariosForm(instance=usuario)
 
-    return render(request, 'LandingPage/perfil.html', {
-        'form_personal': form_personal,
-        'form_uni': form_uni,
-        'total_reservas': usuario.total_reservas(),
-        'reservas_activas': usuario.reservas_activas(),
-        'reservas_pasadas': usuario.reservas_pasadas(),
-        'reservas_canceladas': usuario.reservas_canceladas(),
-    })
+        context = self.get_context_data(form_personal=form_personal, form_uni=form_uni)
+        return self.render_to_response(context)
+
+
+class ReviewDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'LandingPage/resenas_dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.request.user
+        context.update({
+            'pending_reservations': get_pending_reservations_for_review(usuario),
+            'mis_resenas': Resena.objects.for_user(usuario).ordered_recent_first(),
+            'top_spaces': get_top_rated_spaces(),
+        })
+        return context
+
+
+class ReviewCreateView(LoginRequiredMixin, FormView):
+    template_name = 'LandingPage/resena_form.html'
+    form_class = ResenaForm
+    success_url = reverse_lazy('LandingPage:resenas_dashboard')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.reserva = get_object_or_404(
+            Reserva,
+            pk=self.kwargs['reserva_id'],
+            usuario=request.user,
+            cancelada=False,
+        )
+        if self.reserva.fecha > timezone.now().date():
+            messages.error(request, 'Solo puedes calificar reservas ya realizadas.')
+            return redirect('LandingPage:resenas_dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'usuario': self.request.user,
+            'reserva': self.reserva,
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        Resena.objects.create(
+            usuario=self.request.user,
+            espacio=self.reserva.espacio,
+            reserva=self.reserva,
+            calificacion=form.cleaned_data['calificacion'],
+            comentario=form.cleaned_data.get('comentario', ''),
+        )
+        messages.success(self.request, '¡Gracias por calificar el espacio!')
+        return super().form_valid(form)
+
+
+class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Resena
+    template_name = 'LandingPage/resena_confirm_delete.html'
+    success_url = reverse_lazy('LandingPage:resenas_dashboard')
+
+    def test_func(self):
+        return self.get_object().usuario == self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'La reseña fue eliminada correctamente.')
+        return super().delete(request, *args, **kwargs)
+
 
 def reservado_view(request):
     return render(request, 'LandingPage/reservado.html')
@@ -228,17 +323,10 @@ def descripcion_espacio_deportivo(request):
     nombre_espacio = request.GET['nombre']
 
     try:
-        respuesta = client.chat.completions.create(model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Eres un asistente que describe espacios deportivos universitarios."},
-            {"role": "user", "content": f"Describe brevemente el espacio deportivo llamado '{nombre_espacio}' que puede ser reservado por estudiantes en una universidad."}
-        ],
-        max_tokens=100,
-        temperature=0.7)
-        descripcion = respuesta.choices[0].message.content.strip()
+        descripcion = get_ai_provider().generate_description(nombre_espacio, palabras=60)
         return JsonResponse({'descripcion': descripcion})
-    except Exception as e:
-        return JsonResponse({'error': f'Ocurrió un error al generar la descripción: {str(e)}'}, status=500)
+    except AIProviderError as exc:
+        return JsonResponse({'error': str(exc)}, status=500)
 
 def generar_imagen_espacio(request):
     if 'nombre' not in request.GET:
@@ -247,16 +335,10 @@ def generar_imagen_espacio(request):
     nombre_espacio = request.GET['nombre']
 
     try:
-        respuesta = openai.images.generate(
-            model="dall-e-3",
-            prompt=f"Ilustración digital de un espacio deportivo universitario llamado '{nombre_espacio}', moderno y bien iluminado",
-            size="1024x1024",
-            n=1
-        )
-        imagen_url = respuesta.data[0].url
+        imagen_url = get_ai_provider().generate_image_url(nombre_espacio)
         return JsonResponse({'imagen_url': imagen_url})
-    except Exception as e:
-        return JsonResponse({'error': f'Ocurrió un error al generar la imagen: {str(e)}'}, status=500)
+    except AIProviderError as exc:
+        return JsonResponse({'error': str(exc)}, status=500)
 
 @csrf_exempt
 def descripcion_e_imagen_view(request):
@@ -266,31 +348,18 @@ def descripcion_e_imagen_view(request):
     if request.method == 'POST':
         nombre_espacio = request.POST.get('nombre')
         generar_imagen = request.POST.get('generar_imagen') == 'on'
+        provider = get_ai_provider()
 
         try:
-            respuesta = client.chat.completions.create(model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "Eres un asistente que describe espacios deportivos universitarios."},
-                {"role": "user", "content": f"Describe en aproximadamente 100 palabras el espacio deportivo llamado '{nombre_espacio}' que puede ser reservado por estudiantes en una universidad."}
-            ],
-            max_tokens=150,
-            temperature=0.7)
-            descripcion = respuesta.choices[0].message.content.strip()
-        except Exception as e:
-            descripcion = f"Error generando descripción: {str(e)}"
+            descripcion = provider.generate_description(nombre_espacio, palabras=100)
+        except AIProviderError as exc:
+            descripcion = f"Error generando descripción: {str(exc)}"
 
         if generar_imagen:
             try:
-                response_img = client.images.generate(
-                    model="dall-e-3",
-                    prompt=f"Ilustración digital de un espacio deportivo universitario llamado '{nombre_espacio}', moderno y bien iluminado",
-                    size="1024x1024",
-                    quality="standard",
-                    n=1
-                )
-                imagen_url = response_img.data[0].url
-            except Exception as e:
-                imagen_url = f"Error generando imagen: {str(e)}"
+                imagen_url = provider.generate_image_url(nombre_espacio)
+            except AIProviderError as exc:
+                imagen_url = f"Error generando imagen: {str(exc)}"
 
         # Guardar en la base de datos si se generó correctamente
         espacio, creado = EspacioDeportivo.objects.get_or_create(nombre=nombre_espacio)
