@@ -14,65 +14,65 @@ El equipo de desarrollo está conformado por **Diego Mesa, Andrés Alarcón y Mi
 La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibilidad**, **Rendimiento** y **Seguridad**. Para cada uno se describen los puntos positivos actuales, las áreas que requieren mejora y oportunidades de inversión futuras.
 
 ### Usabilidad
-✅ **Cumple**
+ **Cumple**
 - Flujo de navegación sencillo con vistas separadas para inicio, registro, reservas, perfil y consultas de espacios.
 - Formularios con validaciones básicas y mensajes de retroalimentación utilizando el sistema de mensajes de Django.
 - Diseño responsive básico mediante estilos personalizados y componentes ligeros, lo que facilita el acceso desde dispositivos móviles.
 
-⚠️ **A mejorar**
+ **A mejorar**
 - El diseño visual puede modernizarse (colores, tipografía, microinteracciones) para mejorar la experiencia del usuario.
 - Faltan ayudas contextuales y tutoriales breves que guíen al usuario en su primera reserva.
 - Accesibilidad limitada: no se han revisado contrastes, etiquetas ARIA ni soporte completo para teclado.
 
-💰 **Oportunidades de inversión**
+ **Oportunidades de inversión**
 - Destinar tiempo a pruebas de usabilidad con estudiantes para identificar cuellos de botella específicos.
 - Invertir en una librería de componentes UI moderna (p. ej., Tailwind, Bootstrap o un sistema de diseño interno) y en un diseñador UX que unifique la experiencia.
 - Incorporar métricas de experiencia (encuestas in-app, heatmaps) para medir satisfacción en un contexto académico con recursos limitados.
 
 ### Compatibilidad
-✅ **Cumple**
+ **Cumple**
 - Arquitectura basada en Django permite ejecución tanto en entornos locales como en plataformas PaaS (ej. Render) con configuración mínima.
 - Uso de SQLite en desarrollo simplifica la instalación y evita dependencias externas complejas.
 - Los recursos estáticos se sirven con WhiteNoise, facilitando despliegues en diversos servidores.
 
-⚠️ **A mejorar**
+ **A mejorar**
 - No se ha verificado compatibilidad con múltiples navegadores (solo pruebas en Chrome/Edge).
 - Dependencia de servicios externos como OpenAI sin mecanismos de fallback cuando la API no está disponible.
 - Falta automatización para configurar variables de entorno críticas (OPENAI_API_KEY, DEBUG, etc.).
 
-💰 **Oportunidades de inversión**
+ **Oportunidades de inversión**
 - Configurar entornos de pruebas cross-browser (BrowserStack, Sauce Labs) para detectar inconsistencias tempranas.
 - Implementar un sistema de configuración más robusto (por ejemplo, `django-environ`) y documentación clara para despliegues.
 - Evaluar la migración a una base de datos relacional en la nube (PostgreSQL) con scripts de infraestructura como código para escenarios empresariales.
 
 ### Rendimiento
-✅ **Cumple**
+ **Cumple**
 - El uso de Django y plantillas server-side reduce la carga en el cliente y mantiene tiempos de respuesta bajos para el volumen actual.
 - Consultas principales están filtradas por usuario, lo que evita transferencias innecesarias de datos.
 - Archivos estáticos precompilados y servidos localmente, minimizando la latencia en el contexto académico.
 
-⚠️ **A mejorar**
+ **A mejorar**
 - No existen pruebas de carga o métricas de rendimiento registradas; el comportamiento bajo alta concurrencia es desconocido.
 - La generación de contenido con OpenAI puede introducir latencias significativas y no se ejecuta de forma asíncrona.
 - Falta caching de consultas frecuentes (espacios deportivos, reservas activas) y compresión adicional para assets pesados.
 
-💰 **Oportunidades de inversión**
+ **Oportunidades de inversión**
 - Configurar monitoreo de rendimiento (Django Debug Toolbar en desarrollo, herramientas APM en producción) para identificar cuellos de botella.
 - Explorar la ejecución asíncrona o en segundo plano (Celery, RQ) para llamadas a APIs externas.
 - Optimizar imágenes y habilitar caching en CDN o en el propio WhiteNoise para reducir el tiempo de carga percibido.
 
 ### Seguridad
-✅ **Cumple**
+ **Cumple**
 - Autenticación integrada con el modelo personalizado de usuario y vistas protegidas mediante `login_required`.
 - Uso de Hashing de contraseñas y validadores por defecto de Django.
 - Protección CSRF y middleware de seguridad habilitados por defecto en Django.
 
-⚠️ **A mejorar**
+ **A mejorar**
 - Variables sensibles (SECRET_KEY, credenciales API) están hardcodeadas o dependen del entorno local sin controles adicionales.
 - No se han implementado políticas de contraseñas avanzadas ni verificación en dos pasos.
 - Ausencia de pruebas de seguridad o auditorías básicas (scanners de vulnerabilidades, revisión de dependencias).
 
-💰 **Oportunidades de inversión**
+ **Oportunidades de inversión**
 - Migrar los secretos a un gestor seguro (Render Secrets, AWS Secrets Manager) y rotarlos periódicamente.
 - Implementar autenticación multifactor y políticas de contraseña acordes a estándares universitarios.
 - Integrar análisis de dependencias (Dependabot, GitHub Advanced Security) y pruebas de penetración ligeras para prevenir vulnerabilidades.
