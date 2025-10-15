@@ -1,7 +1,7 @@
 # Sigere – Sistema de Gestión de Reservas Deportivas
 
 ## Contexto del proyecto
-Sigere es una aplicación web desarrollada como proyecto académico para la asignatura **Proyecto Integrador 1 (2025-1)**. Esta permite tanto a estudiantes como personal universitario a reservar espacios deportivos, gestionar horarios y consultar información relevante sobre los escenarios disponibles. El proyecto utiliza **Django 5**, **SQLite** como base de datos local y un front-end basado en **HTML/CSS**. Además, integra servicios de **OpenAI** para generar descripciones e imágenes de los espacios deportivos.
+Sigere es una aplicación web desarrollada como proyecto académico para la asignatura **Tópic. Espec. Ing. de Software**. Esta permite tanto a estudiantes como personal universitario a reservar espacios deportivos, gestionar horarios y consultar información relevante sobre los escenarios disponibles. El proyecto utiliza **Django 5**, **SQLite** como base de datos local y un front-end basado en **HTML/CSS**. Además, integra servicios de **OpenAI** para generar descripciones e imágenes de los espacios deportivos.
 
 Los usuarios principales son:
 
