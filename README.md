@@ -8,7 +8,7 @@ Los usuarios principales son:
 - Estudiantes de la universidad que desean reservar espacios deportivos.
 - Personal administrativo encargado de supervisar las reservas y mantener la información actualizada de estos espacios.
 
-El equipo de desarrollo está conformado por **Diego Mesa, Andrés Alarcón y Miguel Villegas**.
+El equipo de desarrollo está conformado por **Maria Alvarez, Jose Jimenez y Miguel Villegas**.
 
 ## Evaluación autocrítica de calidad
 La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibilidad**, **Rendimiento** y **Seguridad**.
