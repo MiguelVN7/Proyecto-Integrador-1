@@ -175,17 +175,6 @@ Se implementó desde cero un **sistema de reseñas** para que cada usuario pueda
 - Evitar duplicados mediante `UniqueConstraint` por usuario/espacio/reserva.
 - Mostrar reseñas personales y ranking global de espacios.
 
-**Casos de uso**
-
-1. Deportista califica un espacio desde su historial de reservas.
-2. Otro estudiante consulta calificaciones antes de reservar.
-3. Administrador modera reseñas desde el panel de Django.
-
-**User stories representativas**
-
-- “Como deportista, quiero dejar mi reseña tras usar el espacio para ayudar a otros compañeros.”
-- “Como estudiante, deseo conocer la reputación de un espacio antes de reservarlo.”
-- “Como administrador, necesito revisar reseñas para detectar problemas recurrentes.”
 
 ### Implementación destacada
 
