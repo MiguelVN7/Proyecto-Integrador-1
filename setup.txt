@@ -9,8 +9,7 @@ Sigere – Guía de configuración rápida
 2. Clonar u obtener el proyecto
    • Desde Git: `git clone https://github.com/MiguelVN7/Proyecto-Integrador-1`  
    • O copia el contenido del proyecto en una carpeta local.  
-   • Sitúate en la raíz del proyecto (donde está `manage.py`).
-
+   
 3. Crear entorno virtual (recomendado)
    • Windows (PowerShell):
      ```powershell
