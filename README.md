@@ -145,7 +145,70 @@ perfil = PerfilUniversitario.objects.get(usuario=usuario_actual)
 perfil.carrera = "Ingeniería"
 perfil.save()
 
-# Recuerde generar la migración correspondiente:
+# Recordar generar la migración correspondiente:
 # python manage.py makemigrations LandingPage
 # python manage.py migrate
 ```
+
+
+## Nueva funcionalidad: Sistema de reseñas y calificaciones
+
+### Descripción general
+Se implementó desde cero un **sistema de reseñas** para que cada usuario pueda calificar los espacios deportivos una vez finaliza su reserva. La información agregada (promedios y número de reseñas) se expone en la ficha del espacio y en un panel dedicado. Esta funcionalidad fortalece la toma de decisiones de los estudiantes y agrega un componente social al producto.
+
+### Patrones de diseño aplicados
+
+| Capa | Patrón | Justificación | Alternativa descartada | Beneficios | Trade-offs |
+|------|--------|---------------|------------------------|------------|-----------|
+| Modelos | Normalización + señal `post_save` (`PerfilUniversitario`, `Resena`) | Separar datos académicos y reseñas en tablas dedicadas garantiza integridad y crea los perfiles automáticamente. | Mantener campos denormalizados en `Usuario`/`Reserva`. | Datos coherentes, extensibilidad futura. | Más migraciones y tablas a mantener. |
+| Servicios | Service Layer (`services/reviews.py`) | Encapsula la lógica de negocio (validaciones, estadísticas) fuera de vistas y modelos. | Métodos ad-hoc en vistas. | Código reutilizable y testeable. | Archivo adicional que el equipo debe ubicar. |
+| Vistas | Class-Based Views con mixins (`ReviewCreateView`, `ReviewDashboard`) | Gestionan formularios y permisos con menos boilerplate y hooks claros. | Funciones basadas en vistas. | Reutilización y orden. | Curva de aprendizaje para entender el flujo CBV. |
+| Formularios | `ModelForm` + validación personalizada | Garantiza que sólo usuarios con reservas emitidas califiquen. | Formularios manuales. | Menos código y validación centralizada. | Dependencia fuerte del modelo. |
+| Templates | Template tags (`rating_tags.py`) | Renderiza estrellas y promedios de forma consistente. | Lógica en los templates. | Reutilización limpia. | Deben cargarse explícitamente en cada template. |
+| Persistencia | Manager/QuerySet (`ReviewQuerySet`) | Expone filtros como `for_space` o `published` usados en vistas y servicios. | Filtrado in situ en cada consulta. | API expresiva y DRY. | Necesita mantenimiento coordinado. |
+
+### Especificaciones funcionales
+
+**Requisitos clave**
+
+- Permitir reseñas únicamente para reservas efectivamente realizadas por el usuario.
+- Calcular métricas agregadas por espacio (promedio y total de reseñas).
+- Evitar duplicados mediante `UniqueConstraint` por usuario/espacio/reserva.
+- Mostrar reseñas personales y ranking global de espacios.
+
+**Casos de uso**
+
+1. Deportista califica un espacio desde su historial de reservas.
+2. Otro estudiante consulta calificaciones antes de reservar.
+3. Administrador modera reseñas desde el panel de Django.
+
+**User stories representativas**
+
+- “Como deportista, quiero dejar mi reseña tras usar el espacio para ayudar a otros compañeros.”
+- “Como estudiante, deseo conocer la reputación de un espacio antes de reservarlo.”
+- “Como administrador, necesito revisar reseñas para detectar problemas recurrentes.”
+
+### Implementación destacada
+
+- `Resena` añade `UniqueConstraint` y relaciona usuario, reserva y espacio.
+- Campos `calificacion_promedio` y `total_resenas` en `EspacioDeportivo` se actualizan vía señales `post_save/post_delete`.
+- `ReviewService` centraliza validaciones, registro y generación de métricas.
+- Vistas basadas en clases (`resenas_dashboard`, `resena_crear`, `resena_eliminar`) usan mixins de autenticación y mensajes.
+- Template tag `star_range` pinta estrellas reutilizables en los listados.
+
+### Cómo probar rápidamente
+
+```python
+from Sigere.Apps.LandingPage.models import Reserva
+from Sigere.Apps.LandingPage.services.reviews import ReviewService
+
+reserva = Reserva.objects.active().first()
+ReviewService.register_review(
+	reserva=reserva,
+	usuario=reserva.usuario,
+	calificacion=4,
+	comentario="Iluminación excelente"
+)
+```
+
+Las migraciones en `LandingPage/0006_*.py` crean las tablas necesarias y migran datos académicos existentes a `PerfilUniversitario` para evitar errores al cargar el perfil.

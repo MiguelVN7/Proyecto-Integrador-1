@@ -72,6 +72,7 @@ Sigere – Guía de configuración rápida
    • Inicio (home): http://127.0.0.1:8000/home/  
    • Inicio de sesión: http://127.0.0.1:8000/login/  
    • Panel de reservas: http://127.0.0.1:8000/misReservas/  
+   • Panel de reseñas: http://127.0.0.1:8000/resenas/
    • Perfil de usuario: http://127.0.0.1:8000/perfil/  
 
 9. Comprobaciones recomendadas
