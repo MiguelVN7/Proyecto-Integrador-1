@@ -100,7 +100,6 @@ descripcion = provider.generate_description("Coliseo EAFIT", palabras=120)
 imagen_url = provider.generate_image_url("Coliseo EAFIT")
 ```
 
-Puedes registrar otra implementación creando una clase que herede de `AIContentProvider` y actualizando `AI_CONTENT_PROVIDER['CLASS']` en `settings.py`.
 
 ## Patrones de diseño de Django aplicados
 
