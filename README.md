@@ -11,7 +11,7 @@ Los usuarios principales son:
 El equipo de desarrollo está conformado por **Diego Mesa, Andrés Alarcón y Miguel Villegas**.
 
 ## Evaluación autocrítica de calidad
-La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibilidad**, **Rendimiento** y **Seguridad**. Para cada uno se describen los puntos positivos actuales, las áreas que requieren mejora y oportunidades de inversión futuras.
+La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibilidad**, **Rendimiento** y **Seguridad**.
 
 ### Usabilidad
  **Cumple**
