@@ -6,7 +6,7 @@ Sigere es una aplicación web desarrollada como proyecto académico para la asig
 Los usuarios principales son:
 
 - Estudiantes de la universidad que desean reservar espacios deportivos.
-- Personal administrativo encargado de supervisar las reservas y mantener la información actualizada de estos espcaios.
+- Personal administrativo encargado de supervisar las reservas y mantener la información actualizada de estos espacios.
 
 El equipo de desarrollo está conformado por **Diego Mesa, Andrés Alarcón y Miguel Villegas**.
 
