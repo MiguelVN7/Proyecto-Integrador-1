@@ -1,12 +1,12 @@
 # Sigere – Sistema de Gestión de Reservas Deportivas
 
 ## Contexto del proyecto
-Sigere es una aplicación web desarrollada como proyecto académico para la asignatura **Proyecto Integrador 1 (2025-1)**. Permite a estudiantes y personal universitario reservar espacios deportivos, gestionar horarios y consultar información relevante sobre los escenarios disponibles. El proyecto utiliza **Django 5**, **SQLite** como base de datos local y un front-end basado en **HTML/CSS** con archivos estáticos propios. Además, integra servicios de **OpenAI** para generar descripciones e imágenes de los espacios deportivos.
+Sigere es una aplicación web desarrollada como proyecto académico para la asignatura **Proyecto Integrador 1 (2025-1)**. Esta permite tanto a estudiantes como personal universitario a reservar espacios deportivos, gestionar horarios y consultar información relevante sobre los escenarios disponibles. El proyecto utiliza **Django 5**, **SQLite** como base de datos local y un front-end basado en **HTML/CSS**. Además, integra servicios de **OpenAI** para generar descripciones e imágenes de los espacios deportivos.
 
 Los usuarios principales son:
 
 - Estudiantes de la universidad que desean reservar espacios deportivos.
-- Personal administrativo encargado de supervisar las reservas y mantener la información actualizada.
+- Personal administrativo encargado de supervisar las reservas y mantener la información actualizada de estos espcaios.
 
 El equipo de desarrollo está conformado por **Diego Mesa, Andrés Alarcón y Miguel Villegas**.
 
@@ -17,7 +17,7 @@ La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibil
  **Cumple**
 - Flujo de navegación sencillo con vistas separadas para inicio, registro, reservas, perfil y consultas de espacios.
 - Formularios con validaciones básicas y mensajes de retroalimentación utilizando el sistema de mensajes de Django.
-- Diseño responsive básico mediante estilos personalizados y componentes ligeros, lo que facilita el acceso desde dispositivos móviles.
+- Diseño responsive básico con estilos personalizados y componentes amigables, lo que facilita el acceso desde dispositivos móviles.
 
  **A mejorar**
 - El diseño visual puede modernizarse (colores, tipografía, microinteracciones) para mejorar la experiencia del usuario.
@@ -84,7 +84,7 @@ Esta autoevaluación ofrece una hoja de ruta práctica para priorizar mejoras de
 
 Para reducir el acoplamiento con la API de OpenAI y facilitar pruebas, se aplicó el principio **Dependency Inversion Principle (DIP)** en el módulo responsable de generar descripciones e imágenes:
 
-1. **Diagnóstico**: Las vistas `descripcion_espacio_deportivo`, `generar_imagen_espacio` y `descripcion_e_imagen_view` dependían directamente de la clase `OpenAI`, lo que dificultaba cambiar de proveedor o realizar pruebas unitarias.
+1. **Diagnóstico**: Las vistas `descripcion_espacio_deportivo`, `generar_imagen_espacio` y `descripcion_e_imagen_view` dependían directamente de la clase `OpenAI`, lo que dificultaba el poder cambiar de proveedor o realizar pruebas unitarias.
 2. **Abstracción**: Se creó la interfaz `AIContentProvider` (en `Sigere/Apps/LandingPage/services/ai_provider.py`) que expone los métodos `generate_description` y `generate_image_url`.
 3. **Implementación concreta**: Se implementó `OpenAIContentProvider`, responsable de interactuar con la librería oficial de OpenAI y encapsular errores específicos.
 4. **Inyección de dependencias**: El archivo `Sigere/settings.py` define `AI_CONTENT_PROVIDER`, permitiendo seleccionar la clase concreta y sus parámetros mediante configuración. Las vistas consumen la abstracción usando `get_ai_provider()` (caché simple) y capturan `AIProviderError`.
@@ -116,7 +116,7 @@ Puedes registrar otra implementación creando una clase que herede de `AIContent
 
 ### Patrón 3 – Normalización (Capa: Modelos)
 - **Decisión**: Separar los campos académicos del modelo `Usuario` en una entidad específica siguiendo el principio de normalización.
-- **Implementación**: Se creó `PerfilUniversitario` (OneToOne con `Usuario`) en `models.py`, se añadieron formularios dedicados (`DatosUniversitariosForm`) y un `post_save` signal que garantiza su existencia. Las vistas actualizan este perfil mediante formularios independientes.
+- **Implementación**: Se creó `PerfilUniversitario` (OneToOne con `Usuario`) en `models.py`, se añadieron formularios delicados (`DatosUniversitariosForm`) y un `post_save` signal que garantiza su existencia. Las vistas actualizan este perfil mediante los formularios independientes.
 - **Beneficios**: Datos personales y académicos quedan desacoplados, facilitando futuras extensiones (perfiles múltiples, auditorías), reduce la presencia de campos opcionales en el usuario base y permite reusar el perfil en otros contextos.
 
 ### Ejemplo de uso rápido
