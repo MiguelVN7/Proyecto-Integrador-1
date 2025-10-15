@@ -34,34 +34,34 @@ Sigere – Guía de configuración rápida
      ```
      OPENAI_API_KEY=dummy
      ```
-   • Si no cuentas con una clave válida, puedes dejar `dummy` para desarrollo local.  
+   • Si no se cuenta con una clave válida, se puede dejar `dummy` para desarrollo local.  
 
 6. Migraciones de base de datos
-   • Ejecuta las migraciones para crear las tablas de SQLite (incluye el modelo `PerfilUniversitario` y reseñas):
+   • Ejecutar las migraciones para crear las tablas de SQLite (incluye el modelo `PerfilUniversitario` y reseñas):
      ```
      python manage.py migrate
      ```
-   • (Opcional) Crea un usuario administrador para acceder al panel de Django:
+   • (Opcional) Crear un usuario administrador para acceder al panel de Django:
      ```
      python manage.py createsuperuser
      ```
-   • (Opcional) Carga datos de ejemplo si deseas poblar la base con reservas iniciales:
+   • (Opcional) Cargar datos de ejemplo si se desea poblar la base con reservas iniciales:
      ```
      python populate.py
      ```
 
 7. Levantar el servidor de desarrollo
-   • Asegúrate de mantener el entorno virtual activo y el `.env` configurado.  
-   • Ejecuta:
+   • Asegurarse de mantener el entorno virtual activo y el `.env` configurado.  
+   • Ejecutar:
      ```
      python manage.py runserver
      ```
-   • Si usas PowerShell y necesitas definir la variable temporalmente:  
+   • Si se usa PowerShell y necesitas definir la variable temporalmente:  
      ```powershell
      $env:OPENAI_API_KEY="dummy"; python manage.py runserver
      ```
 
-     Yo lo corro así en mi windows:
+     Yo (Miguel) lo corro así en mi windows:
      ```powershell
      $env:DJANGO_SETTINGS_MODULE="Sigere.settings"; $env:OPENAI_API_KEY="dummy"; C:/Users/Miguel/AppData/Local/Microsoft/WindowsApps/python3.11.exe manage.py runserver
      ```
@@ -75,13 +75,9 @@ Sigere – Guía de configuración rápida
    • Perfil de usuario: http://127.0.0.1:8000/perfil/  
 
 9. Comprobaciones recomendadas
-   • Verifica que todo esté correcto antes de ejecutar el servidor:
+   • Verificar que todo esté correcto antes de ejecutar el servidor:
      ```
      python manage.py check
      ```
-   • Si modificas el modelo, recuerda volver a ejecutar `makemigrations` y `migrate`.
+   • Si se modifica el modelo, volver a ejecutar `makemigrations` y `migrate`.
 
-10. Notas adicionales
-    • El proyecto usa SQLite (`Sigere.db`) por defecto; no es necesario modificar `settings.py` para desarrollo.  
-    • Los archivos estáticos se sirven mediante Django durante el desarrollo.  
-    • Para despliegues en producción deberás configurar variables de entorno seguras, HTTPS, y un servidor WSGI (por ejemplo, Gunicorn) detrás de un servidor web.  
