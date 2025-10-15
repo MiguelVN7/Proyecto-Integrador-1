@@ -78,7 +78,7 @@ La revisión se centra en cuatro parámetros clave: **Usabilidad**, **Compatibil
 - Integrar análisis de dependencias (Dependabot, GitHub Advanced Security) y pruebas de penetración ligeras para prevenir vulnerabilidades.
 
 ---
-Esta autoevaluación ofrece una hoja de ruta práctica para priorizar mejoras de calidad en un proyecto académico con aspiraciones de escalabilidad futura. Las recomendaciones permiten escalar gradualmente hacia un estándar empresarial si se dispone de recursos adicionales.
+
 
 ## Principio de Inversión de Dependencias aplicado
 
